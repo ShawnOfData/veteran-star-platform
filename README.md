@@ -19,7 +19,6 @@
 | 存储 | MySQL 8.0 · Redis 7 |
 | 学生端 | Vue 3 · Vant 4 · Pinia · Vite |
 | 管理端 | Vue 3 · Element Plus · ECharts · Vite |
-| 小程序 | 微信原生小程序 |
 | 部署 | Docker Compose · Nginx · 阿里云短信（Mock 降级） |
 
 ## 目录结构
