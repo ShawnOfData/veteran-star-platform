@@ -1,0 +1,33 @@
+# ===== 后端 Java =====
+target/
+*.class
+*.jar
+!deploy/Dockerfile.app
+
+# ===== 前端 Node =====
+node_modules/
+dist/
+*.local
+
+# ===== 日志 =====
+*.log
+logs/
+backend-*
+
+# ===== 上传文件 =====
+uploads/
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# ===== 系统 =====
+.DS_Store
+Thumbs.db
+
+# ===== 环境变量（含密钥，禁止提交） =====
+.env
+.env.*
+!.env.example

@@ -1,0 +1,80 @@
+<view class="login-page">
+  <view class="scan-line"></view>
+
+  <view class="login-header">
+    <view class="header-emblem">
+      <image src="/images/logo.png" mode="aspectFit" class="emblem-img" />
+    </view>
+    <text class="header-title">戎归·星辉</text>
+    <text class="header-sub">信息档案与积分管理系统</text>
+  </view>
+
+  <view class="login-tabs">
+    <view class="tab-item {{activeTab === 'login' ? 'active' : ''}}" data-tab="login" bindtap="switchTab">登录</view>
+    <view class="tab-item {{activeTab === 'register' ? 'active' : ''}}" data-tab="register" bindtap="switchTab">注册</view>
+  </view>
+
+  <view class="login-form" wx:if="{{activeTab === 'login'}}">
+    <view class="form-group">
+      <text class="form-label">学号</text>
+      <input class="form-input" placeholder="请输入学号" value="{{studentNo}}" bindinput="onInputChange" data-field="studentNo" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">手机号</text>
+      <input class="form-input" placeholder="请输入手机号" type="number" maxlength="11" value="{{phone}}" bindinput="onInputChange" data-field="phone" />
+    </view>
+    <button class="btn-primary" bindtap="handleLogin" disabled="{{loading}}">
+      <text wx:if="{{!loading}}">登 录</text>
+      <view wx:else class="loading-container">
+        <view class="loading-dot"></view>
+        <view class="loading-dot"></view>
+        <view class="loading-dot"></view>
+      </view>
+    </button>
+  </view>
+
+  <view class="login-form" wx:else>
+    <view class="form-group">
+      <text class="form-label">学号</text>
+      <input class="form-input" placeholder="请输入学号" value="{{registerData.studentNo}}" bindinput="onRegisterInput" data-field="studentNo" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">姓名</text>
+      <input class="form-input" placeholder="请输入姓名" value="{{registerData.name}}" bindinput="onRegisterInput" data-field="name" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">手机号</text>
+      <input class="form-input" placeholder="请输入手机号" type="number" maxlength="11" value="{{registerData.phone}}" bindinput="onRegisterInput" data-field="phone" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">密码</text>
+      <input class="form-input" placeholder="请输入密码（至少6位）" password value="{{registerData.password}}" bindinput="onRegisterInput" data-field="password" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">学院</text>
+      <input class="form-input" placeholder="请输入学院" value="{{registerData.college}}" bindinput="onRegisterInput" data-field="college" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">专业</text>
+      <input class="form-input" placeholder="请输入专业" value="{{registerData.major}}" bindinput="onRegisterInput" data-field="major" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">年级</text>
+      <picker mode="selector" range="{{grades}}" value="{{gradeIndex}}" bindchange="onGradeChange">
+        <view class="form-input picker-text">{{gradeIndex > -1 ? grades[gradeIndex] : '请选择年级'}}</view>
+      </picker>
+    </view>
+    <button class="btn-primary" bindtap="handleRegister" disabled="{{loading}}">
+      <text wx:if="{{!loading}}">注 册</text>
+      <view wx:else class="loading-container">
+        <view class="loading-dot"></view>
+        <view class="loading-dot"></view>
+        <view class="loading-dot"></view>
+      </view>
+    </button>
+  </view>
+
+  <view class="login-footer">
+    <text>武装部 · 退役军人服务站</text>
+  </view>
+</view>

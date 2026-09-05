@@ -1,0 +1,58 @@
+<view class="ranking-page">
+  <!-- 排行头部 -->
+  <view class="ranking-header">
+    <text class="ranking-title">积分排行</text>
+    <text class="ranking-period">本月</text>
+  </view>
+
+  <!-- Top 3 奖台 -->
+  <view class="podium">
+    <view class="podium-item rank-2" wx:if="{{top3[1]}}">
+      <view class="podium-avatar">{{top3[1].initial}}</view>
+      <text class="podium-name">{{top3[1].name}}</text>
+      <text class="podium-points">{{top3[1].totalPoints}}</text>
+      <view class="podium-rank">2</view>
+    </view>
+    <view class="podium-item rank-1" wx:if="{{top3[0]}}">
+      <view class="podium-crown">★</view>
+      <view class="podium-avatar">{{top3[0].initial}}</view>
+      <text class="podium-name">{{top3[0].name}}</text>
+      <text class="podium-points">{{top3[0].totalPoints}}</text>
+      <view class="podium-rank">1</view>
+    </view>
+    <view class="podium-item rank-3" wx:if="{{top3[2]}}">
+      <view class="podium-avatar">{{top3[2].initial}}</view>
+      <text class="podium-name">{{top3[2].name}}</text>
+      <text class="podium-points">{{top3[2].totalPoints}}</text>
+      <view class="podium-rank">3</view>
+    </view>
+  </view>
+
+  <view class="divider"></view>
+
+  <!-- 排行列表 -->
+  <view class="rank-list">
+      <view class="rank-item" wx:for="{{ranking}}" wx:for-index="index" wx:key="id">
+      <view class="rank-number {{index < 3 ? 'top' : ''}}">{{index + 4}}</view>
+      <view class="rank-avatar-sm">{{item.initial}}</view>
+      <view class="rank-info">
+        <text class="rank-name">{{item.name}}</text>
+        <text class="rank-college">{{item.college || ''}}</text>
+      </view>
+      <text class="rank-points">{{item.totalPoints}}分</text>
+    </view>
+  </view>
+
+  <!-- 自己的排名 -->
+  <view class="my-rank" wx:if="{{myRank}}">
+    <view class="rank-item my-rank-item">
+      <view class="rank-number">{{myRank.rank}}</view>
+      <view class="rank-avatar-sm">{{myRank.initial}}</view>
+      <view class="rank-info">
+        <text class="rank-name">{{myRank.name}}</text>
+        <text class="rank-college">我的排名</text>
+      </view>
+      <text class="rank-points">{{myRank.totalPoints}}分</text>
+    </view>
+  </view>
+</view>

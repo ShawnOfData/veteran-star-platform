@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { margin: 0; font-family: 'SimSun', '宋体', serif; font-size: 12pt; line-height: 1.8; }
+  .page { padding: 0 30px; }
+
+  .header { background: linear-gradient(135deg, #d44, #a33); color: #fff; padding: 22px 28px; margin-bottom: 14px; display: flex; align-items: center; gap: 20px; }
+  .header .avatar-img { width: 64px; height: 64px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); object-fit: cover; }
+  .header .name { font-size: 21pt; font-weight: bold; }
+  .header .meta { font-size: 10pt; opacity: 0.9; margin-top: 4px; }
+  .header .level { display: inline-block; background: rgba(255,255,255,0.3); padding: 2px 10px; margin-top: 6px; }
+
+  .section-title { font-size: 13pt; font-weight: bold; color: #a33; border-bottom: 2px solid #a33; padding-bottom: 2px; margin: 16px 0 8px 0; }
+
+  .info-table { width: 100%; border-collapse: collapse; }
+  .info-table td { padding: 3px 6px; font-size: 10pt; }
+  .info-table .label { color: #888; width: 80px; }
+
+  .item { padding: 5px 0; border-bottom: 1px solid #eee; }
+  .item .title { font-weight: bold; font-size: 11pt; color: #333; }
+  .item .meta { color: #888; font-size: 10pt; }
+
+  .tag { display: inline-block; background: #fde; color: #a33; padding: 2px 8px; margin: 2px; font-size: 9pt; }
+  .tag-skill { display: inline-block; background: #fee; color: #a33; padding: 2px 10px; margin: 2px; font-size: 9pt; border: 1px solid #a33; border-radius: 2px; }
+
+  .personal-summary { background: #fff5f5; padding: 12px 16px; margin: 12px 0; color: #555; font-size: 10pt; border-left: 3px solid #a33; }
+
+  .footer { border-top: 2px solid #a33; padding-top: 10px; margin-top: 20px; text-align: center; color: #999; font-size: 9pt; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <img th:if="${avatarUrl != null and !avatarUrl.isEmpty()}" class="avatar-img" th:src="@{${avatarUrl}}" alt="头像" />
+    <div>
+      <div class="name" th:text="${basicName} + ' 退役军人简历'">姓名</div>
+      <div class="meta">
+        <span th:text="${basic.studentNo}">学号</span> &nbsp;|&nbsp;
+        <span th:text="${basicCollege}">学院</span> &nbsp;|&nbsp;
+        <span th:text="${basicMajor}">专业</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 联系方式 -->
+  <table class="info-table" th:if="${phone != null and !phone.isEmpty()} or ${email != null and !email.isEmpty()}">
+    <tr>
+      <td class="label" th:if="${phone != null and !phone.isEmpty()}">手机</td>
+      <td th:if="${phone != null and !phone.isEmpty()}" th:text="${phone}"></td>
+      <td class="label" th:if="${email != null and !email.isEmpty()}">邮箱</td>
+      <td th:if="${email != null and !email.isEmpty()}" th:text="${email}"></td>
+    </tr>
+  </table>
+
+  <!-- 个人简介 -->
+  <div th:if="${personalSummary != null and !personalSummary.isEmpty()}">
+    <div class="section-title">个人简介</div>
+    <div class="personal-summary" th:text="${personalSummary}"></div>
+  </div>
+
+  <!-- 求职意向 -->
+  <div th:if="${expectedJob != null and !expectedJob.isEmpty()} or ${expectedCity != null and !expectedCity.isEmpty()} or ${expectedSalary != null and !expectedSalary.isEmpty()}">
+    <div class="section-title">求职意向</div>
+    <table class="info-table">
+      <tr th:if="${expectedJob != null and !expectedJob.isEmpty()}"><td class="label">期望岗位</td><td th:text="${expectedJob}"></td></tr>
+      <tr th:if="${expectedCity != null and !expectedCity.isEmpty()}"><td class="label">期望城市</td><td th:text="${expectedCity}"></td></tr>
+      <tr th:if="${expectedSalary != null and !expectedSalary.isEmpty()}"><td class="label">期望薪资</td><td th:text="${expectedSalary}"></td></tr>
+    </table>
+  </div>
+
+  <!-- 技能 -->
+  <div th:if="${skills != null and !skills.isEmpty()}">
+    <div class="section-title">专业技能</div>
+    <span th:each="s : ${skills}" class="tag-skill" th:text="${s}">技能</span>
+  </div>
+
+  <div th:if="${military != null}">
+    <div class="section-title">服役经历</div>
+    <div class="item">
+      <span class="title" th:text="${military.branchName} + ' · ' + ${military.unit}">单位</span>
+      <span class="meta" th:text="'  |  ' + ${military.startDate} + ' ~ ' + ${military.endDate}">日期</span>
+    </div>
+    <table class="info-table">
+      <tr><td class="label">职务</td><td th:text="${military.position}"></td>
+          <td class="label">服役年限</td><td th:text="${military.serviceYears}"></td></tr>
+    </table>
+  </div>
+
+  <div th:if="${showHonors and honors != null and !honors.isEmpty()}">
+    <div class="section-title">荣誉奖项</div>
+    <div th:each="h : ${honors}" class="item">
+      <span class="title" th:text="${h.name}">荣誉</span>
+      <span class="meta" th:text="${h.awardDate}">详情</span>
+    </div>
+  </div>
+
+  <div th:if="${showCerts and certs != null and !certs.isEmpty()}">
+    <div class="section-title">技能证书</div>
+    <div th:each="c : ${certs}" class="item">
+      <span class="title" th:text="${c.name}">证书</span>
+      <span class="meta" th:text="${c.obtainDate}">详情</span>
+    </div>
+  </div>
+
+  <div th:if="${showServices and services != null and !services.isEmpty()}">
+    <div class="section-title">社会服务</div>
+    <div th:each="s : ${services}" class="item">
+      <span class="title" th:text="${s.title}">服务</span>
+      <span class="meta" th:text="${s.serviceDate} + '  ' + ${s.hours} + '小时'">详情</span>
+    </div>
+  </div>
+
+  <!-- 实习经历 -->
+  <div th:if="${showInternships and internships != null and !internships.isEmpty()}">
+    <div class="section-title">实习经历</div>
+    <div th:each="i : ${internships}" class="item">
+      <span class="title" th:text="${i.company}">实习单位</span>
+      <span th:if="${i.position != null and !i.position.isEmpty()}" class="meta" th:text="${i.position}">职位</span>
+      <span th:if="${i.startDate != null and !i.startDate.isEmpty()}" class="meta" th:text="${i.startDate} + ' ~ ' + ${i.endDate}">日期</span>
+      <div th:if="${i.description != null and !i.description.isEmpty()}" style="color:#666;font-size:10pt;margin-top:4px;line-height:1.6;white-space:pre-wrap;" th:text="${i.description}">描述</div>
+    </div>
+  </div>
+
+  <!-- 项目经历 -->
+  <div th:if="${showProjects and projects != null and !projects.isEmpty()}">
+    <div class="section-title">项目经历</div>
+    <div th:each="p : ${projects}" class="item">
+      <span class="title" th:text="${p.name}">项目名称</span>
+      <span th:if="${p.role != null and !p.role.isEmpty()}" class="meta" th:text="${p.role}">角色</span>
+      <span th:if="${p.startDate != null and !p.startDate.isEmpty()}" class="meta" th:text="${p.startDate} + ' ~ ' + ${p.endDate}">日期</span>
+      <div th:if="${p.description != null and !p.description.isEmpty()}" style="color:#666;font-size:10pt;margin-top:4px;line-height:1.6;white-space:pre-wrap;" th:text="${p.description}">描述</div>
+    </div>
+  </div>
+
+  <div th:if="${showAcademic and academic != null and !academic.isEmpty()}">
+    <div class="section-title">学业表现</div>
+    <div th:each="a : ${academic}" class="item">
+      <span class="title" th:text="${a.semester}">学期</span>
+      <span class="meta" th:text="'GPA ' + ${a.gpa}">成绩</span>
+      <span th:if="${a.scholarship != null}" class="tag" th:text="${a.scholarship}">奖学金</span>
+    </div>
+  </div>
+
+  <div th:if="${showIntention and intention != null}">
+    <div class="section-title">就业意向</div>
+    <table class="info-table">
+      <tr th:if="${intention.expectedCity != null}"><td class="label">城市</td><td th:text="${intention.expectedCity}"></td></tr>
+      <tr th:if="${intention.expectedSalary != null}"><td class="label">薪资</td><td th:text="${intention.expectedSalary}"></td></tr>
+    </table>
+    <div th:if="${intention.jobTypes != null}" style="margin-top:4px;">
+      <span th:each="j : ${intention.jobTypes}" class="tag" th:text="${j}">岗位</span>
+    </div>
+  </div>
+
+  <!-- 自定义模块 -->
+  <div th:if="${customSections != null and !customSections.isEmpty()}">
+    <div th:each="cs : ${customSections}" th:if="${cs.title != null and !cs.title.isEmpty()}">
+      <div class="section-title" th:text="${cs.title}">自定义模块</div>
+      <div th:if="${cs.content != null and !cs.content.isEmpty()}" class="personal-summary" style="white-space:pre-wrap;" th:text="${cs.content}">内容</div>
+    </div>
+  </div>
+
+  <div class="footer" th:text="'本简历由戎归·星辉系统生成 · ' + ${generatedDate}">页脚</div>
+
+</div>
+</body>
+</html>

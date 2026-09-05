@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/login/login",
+    "pages/points/points",
+    "pages/opportunities/opportunities",
+    "pages/opportunities/opportunity-detail/opportunity-detail",
+    "pages/ranking/ranking",
+    "pages/profile/profile",
+    "pages/my-applications/my-applications"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#080c14",
+    "navigationBarTitleText": "戎归·星辉",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#080c14",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "rgba(255,255,255,0.4)",
+    "selectedColor": "#c4a35a",
+    "backgroundColor": "#0a0f18",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/opportunities/opportunities",
+        "text": "机会",
+        "iconPath": "images/tab-opportunity.png",
+        "selectedIconPath": "images/tab-opportunity-active.png"
+      },
+      {
+        "pagePath": "pages/ranking/ranking",
+        "text": "排行",
+        "iconPath": "images/tab-ranking.png",
+        "selectedIconPath": "images/tab-ranking-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab-profile.png",
+        "selectedIconPath": "images/tab-profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

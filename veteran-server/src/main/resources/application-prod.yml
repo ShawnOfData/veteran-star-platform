@@ -1,0 +1,90 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://mysql:3306/veteran_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 5
+      idle-timeout: 180000
+      max-lifetime: 600000
+      connection-timeout: 10000
+
+  redis:
+    host: ${REDIS_HOST:redis}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 4
+        max-idle: 4
+        min-idle: 1
+        max-wait: 3000ms
+
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 5MB
+      resolve-lazily: true
+
+# 应用配置
+server:
+  tomcat:
+    threads:
+      max: 50
+      min-spare: 5
+    connection-timeout: 30000
+    max-connections: 200
+    accept-count: 30
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  upload-dir: /data/veteran/uploads
+
+# JWT 配置
+jwt:
+  secret: ${JWT_SECRET:veteran-jwt-secret-key-must-be-at-least-256-bits-long}
+  expiration: 86400000
+
+# AES 加密配置
+aes:
+  key: ${AES_KEY:veteranAesKey16B}
+  iv: ${AES_IV:veteranAesIv16Bt}
+
+# AI 分析配置
+ai:
+  api-key: ${AI_API_KEY:}
+  base-url: ${AI_BASE_URL:https://api.deepseek.com}
+  model: ${AI_MODEL:deepseek-chat}
+
+# 阿里云短信（生产环境）
+aliyun:
+  sms:
+    access-key: ${ALI_ACCESS_KEY}
+    secret-key: ${ALI_SECRET_KEY}
+    sign-name: ${ALI_SIGN_NAME}
+    template-code: ${ALI_TEMPLATE_CODE}
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+# 生产环境关闭 Swagger/Knife4j
+knife4j:
+  enable: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

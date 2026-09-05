@@ -1,0 +1,138 @@
+version: '3.8'
+
+services:
+  # ===== MySQL 数据库 =====
+  mysql:
+    restart: unless-stopped
+    image: mysql:8.0
+    container_name: veteran-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: veteran_db
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./soldier.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-authentication-plugin=mysql_native_password
+      --binlog-expire-logs-seconds=604800
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD:-root}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ===== Redis 缓存 =====
+  redis:
+    restart: unless-stopped
+    image: redis:7-alpine
+    container_name: veteran-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ===== 后端 Spring Boot 应用 =====
+  app:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    container_name: veteran-server
+    ports:
+      - "8080:8080"
+    volumes:
+      # 上传文件持久化（头像、PDF、证明材料）
+      - uploads-data:/data/veteran/uploads
+      # 日志持久化
+      - app-logs:/app/logs
+    environment:
+      TZ: Asia/Shanghai
+      SPRING_PROFILES_ACTIVE: prod
+      # 数据库
+      DB_URL: jdbc:mysql://mysql:3306/veteran_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      # Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ""
+      # JWT
+      JWT_SECRET: ${JWT_SECRET:-veteran-jwt-secret-key-must-be-at-least-256-bits-long}
+      # AES 加密
+      AES_KEY: ${AES_KEY:-veteranAesKey16B}
+      AES_IV: ${AES_IV:-veteranAesIv16Bt}
+      # 应用配置（对外访问地址，生成 PDF/头像绝对路径使用）
+      APP_BASE_URL: http://your-server-ip
+      # 上传文件目录（指向 docker 卷 uploads-data，与 nginx 共享）
+      # 后端写入 /data/veteran/uploads/，nginx alias 同一卷，前端 /uploads/** 才能访问到
+      APP_UPLOAD_DIR: /data/veteran/uploads
+      # AI 分析（可选）
+      AI_API_KEY: ${AI_API_KEY:-}
+      AI_BASE_URL: ${AI_BASE_URL:-https://api.deepseek.com}
+      AI_MODEL: ${AI_MODEL:-deepseek-chat}
+      # 阿里云短信（生产环境填入真实值；留空则降级为 Mock）
+      ALI_ACCESS_KEY: ${ALI_ACCESS_KEY:-}
+      ALI_SECRET_KEY: ${ALI_SECRET_KEY:-}
+      ALI_SIGN_NAME: ${ALI_SIGN_NAME:-}
+      ALI_TEMPLATE_CODE: ${ALI_TEMPLATE_CODE:-}
+      # JVM 参数
+      JAVA_OPTS: "-Xms256m -Xmx512m -Dfile.encoding=UTF-8"
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ===== Nginx 前端 + 反向代理 =====
+  nginx:
+    restart: unless-stopped
+    image: nginx:alpine
+    container_name: veteran-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+      - ./html-mobile:/usr/share/nginx/html-mobile:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # 上传文件共享给 nginx 直接提供静态服务
+      - uploads-data:/data/veteran/uploads:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+    depends_on:
+      - app
+
+volumes:
+  mysql-data:
+  redis-data:
+  uploads-data:
+  app-logs:

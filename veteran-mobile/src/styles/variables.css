@@ -1,0 +1,50 @@
+/**
+ * 主题变量定义
+ * 蓝色科技风 — 与桌面端一致的主色调
+ */
+:root {
+  /* 主色调 */
+  --color-primary: #2563EB;
+  --color-primary-light: #409eff;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-gradient: linear-gradient(135deg, #409eff 0%, #2563EB 100%);
+
+  /* 辅助色 */
+  --color-success: #07c160;
+  --color-warning: #ff976a;
+  --color-danger: #ee0a24;
+  --color-gold: #c4a35a;
+
+  /* 文字色 */
+  --color-text-primary: #323233;
+  --color-text-secondary: #646566;
+  --color-text-placeholder: #c8c9cc;
+  --color-text-white: #ffffff;
+
+  /* 背景色 */
+  --color-bg-page: #f7f8fa;
+  --color-bg-card: #ffffff;
+  --color-bg-gray: #f2f3f5;
+
+  /* 边框 */
+  --color-border: #ebedf0;
+  --color-border-light: #f2f3f5;
+
+  /* 间距 */
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 24px;
+
+  /* 圆角 */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 12px rgba(0, 0, 0, 0.1);
+  --shadow-primary: 0 4px 16px rgba(37, 99, 235, 0.25);
+}

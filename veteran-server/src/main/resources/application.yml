@@ -1,0 +1,131 @@
+server:
+  port: 8080
+  # 小服务器 — Tomcat 线程池限制
+  tomcat:
+    threads:
+      max: 50
+      min-spare: 5
+    connection-timeout: 30000
+    max-connections: 200
+    accept-count: 30
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: veteran-server
+  # 找不到处理器时抛出 NoHandlerFoundException，交给 GlobalExceptionHandler 统一处理
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/soldier?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 5
+      idle-timeout: 180000
+      max-lifetime: 600000
+      connection-timeout: 10000
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: 0
+    lettuce:
+      pool:
+        max-active: 4
+        max-idle: 4
+        min-idle: 1
+        max-wait: 3000ms
+    timeout: 5000ms
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 5MB
+      # 上传后立即释放内存
+      resolve-lazily: true
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.veteran.entity
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+jwt:
+  secret: ${JWT_SECRET:veteran-jwt-secret-key-must-be-at-least-256-bits-long}
+  expiration: 86400000
+
+aes:
+  key: ${AES_KEY:veteranAesKey16B}
+  iv: ${AES_IV:veteranAesIv16Bt}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# PDF 简历配置
+resume:
+  font-path: fonts/NotoSansSC-Regular.ttf
+
+# 应用基础配置
+app:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  upload-dir: ${APP_UPLOAD_DIR:uploads}
+
+# AI 分析配置（DeepSeek / OpenAI 兼容）
+ai:
+  api-key: ${AI_API_KEY:}
+  base-url: ${AI_BASE_URL:https://api.deepseek.com}
+  model: ${AI_MODEL:deepseek-chat}
+
+# 阿里云短信（dev 环境使用 Mock，留空即可；prod 环境填入真实值）
+aliyun:
+  sms:
+    access-key: ${ALI_ACCESS_KEY:}
+    secret-key: ${ALI_SECRET_KEY:}
+    sign-name: ${ALI_SIGN_NAME:}
+    template-code: ${ALI_TEMPLATE_CODE:}
+
+# 文件日志（便于排查问题）
+logging:
+  file:
+    name: backend-runtime.log
+  level:
+    com.veteran: INFO
+    org.springframework: INFO

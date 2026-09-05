@@ -1,0 +1,54 @@
+<view class="points-page">
+  <!-- 积分总览 -->
+  <view class="points-header">
+    <view class="points-total">
+      <text class="points-value text-gold">{{totalPoints}}</text>
+      <text class="points-label">累计积分</text>
+    </view>
+    <view class="points-stats">
+      <view class="points-stat-item">
+        <text class="stat-val">{{serviceCount}}</text>
+        <text class="stat-lbl">服务次数</text>
+      </view>
+      <view class="points-stat-item">
+        <text class="stat-val">{{honorCount}}</text>
+        <text class="stat-lbl">荣誉</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="divider"></view>
+
+  <!-- 筛选 -->
+  <view class="filter-bar">
+    <picker mode="selector" range="{{typeFilters}}" value="{{typeIndex}}" bindchange="onTypeChange">
+      <view class="filter-btn">{{typeFilters[typeIndex]}} ▾</view>
+    </picker>
+  </view>
+
+  <!-- 积分明细列表 -->
+  <view class="detail-list">
+    <view class="detail-item card" wx:for="{{details}}" wx:key="id">
+      <view class="detail-left">
+        <text class="detail-reason">{{item.reasonType}}</text>
+        <text class="detail-time">{{item.createTime}}</text>
+        <text class="detail-remark" wx:if="{{item.remark}}">{{item.remark}}</text>
+      </view>
+      <view class="detail-right">
+        <text class="detail-change {{item.changeValue > 0 ? 'positive' : 'negative'}}">
+          {{item.changeValue > 0 ? '+' : ''}}{{item.changeValue}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{details.length === 0 && !loading}}">
+    <text>暂无积分记录</text>
+  </view>
+
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-dot"></view>
+    <view class="loading-dot"></view>
+    <view class="loading-dot"></view>
+  </view>
+</view>
