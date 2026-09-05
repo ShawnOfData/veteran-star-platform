@@ -1,4 +1,4 @@
-spring:
+﻿spring:
   datasource:
     url: ${DB_URL:jdbc:mysql://mysql:3306/veteran_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${DB_USERNAME:root}
@@ -44,13 +44,13 @@ app:
 
 # JWT 配置
 jwt:
-  secret: ${JWT_SECRET:veteran-jwt-secret-key-must-be-at-least-256-bits-long}
+  secret: ${JWT_SECRET:yfRGxv3NjlvocLySH8FxzP9MXc6kfBAX8jf3R5zT}
   expiration: 86400000
 
 # AES 加密配置
 aes:
-  key: ${AES_KEY:veteranAesKey16B}
-  iv: ${AES_IV:veteranAesIv16Bt}
+  key: ${AES_KEY:HNb6BbXuVGvWEaWS}
+  iv: ${AES_IV:gfSuzTHRVHq2FEbL}
 
 # AI 分析配置
 ai:

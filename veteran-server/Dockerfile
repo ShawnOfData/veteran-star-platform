@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
@@ -10,9 +10,9 @@ ENV DB_PASSWORD=root
 ENV REDIS_HOST=redis
 ENV REDIS_PORT=6379
 ENV REDIS_PASSWORD=
-ENV JWT_SECRET=veteran-jwt-secret-key-must-be-at-least-256-bits-long
-ENV AES_KEY=veteran-aes-key-16char
-ENV AES_IV=veteran-iv-16char
+ENV JWT_SECRET=yfRGxv3NjlvocLySH8FxzP9MXc6kfBAX8jf3R5zT
+ENV AES_KEY=HNb6BbXuVGvWEaWS
+ENV AES_IV=gfSuzTHRVHq2FEbL
 
 EXPOSE 8080
 

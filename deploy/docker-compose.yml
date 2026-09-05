@@ -1,4 +1,4 @@
-version: '3.8'
+﻿version: '3.8'
 
 services:
   # ===== MySQL 数据库 =====
@@ -79,10 +79,10 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: ""
       # JWT
-      JWT_SECRET: ${JWT_SECRET:-veteran-jwt-secret-key-must-be-at-least-256-bits-long}
+      JWT_SECRET: ${JWT_SECRET:-yfRGxv3NjlvocLySH8FxzP9MXc6kfBAX8jf3R5zT}
       # AES 加密
-      AES_KEY: ${AES_KEY:-veteranAesKey16B}
-      AES_IV: ${AES_IV:-veteranAesIv16Bt}
+      AES_KEY: ${AES_KEY:-HNb6BbXuVGvWEaWS}
+      AES_IV: ${AES_IV:-gfSuzTHRVHq2FEbL}
       # 应用配置（对外访问地址，生成 PDF/头像绝对路径使用）
       APP_BASE_URL: http://your-server-ip
       # 上传文件目录（指向 docker 卷 uploads-data，与 nginx 共享）

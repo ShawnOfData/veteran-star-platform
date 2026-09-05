@@ -1,4 +1,4 @@
-server:
+﻿server:
   port: 8080
   # 小服务器 — Tomcat 线程池限制
   tomcat:
@@ -83,12 +83,12 @@ springdoc:
     path: /v3/api-docs
 
 jwt:
-  secret: ${JWT_SECRET:veteran-jwt-secret-key-must-be-at-least-256-bits-long}
+  secret: ${JWT_SECRET:yfRGxv3NjlvocLySH8FxzP9MXc6kfBAX8jf3R5zT}
   expiration: 86400000
 
 aes:
-  key: ${AES_KEY:veteranAesKey16B}
-  iv: ${AES_IV:veteranAesIv16Bt}
+  key: ${AES_KEY:HNb6BbXuVGvWEaWS}
+  iv: ${AES_IV:gfSuzTHRVHq2FEbL}
 
 management:
   endpoints:
