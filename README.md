@@ -29,7 +29,6 @@ veteran-star-platform/
 ├── veteran-server/          # 后端服务（Spring Boot，端口 8080）
 ├── veteran-mobile/          # 学生端移动网页（开发端口 3001）
 ├── veteran-admin/           # 管理端 Web（开发端口 3000）
-├── veteran-miniapp/         # 微信小程序
 ├── deploy/                  # 生产部署（Docker Compose + Nginx）
 └── soldier.sql              # 数据库初始化脚本（建表 + 字典 + 演示数据）
 ```
